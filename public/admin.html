@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Annotation Admin</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="admin.html">EquityMedQA-SG <span>admin</span></a>
+    <nav><a href="guide.html" target="_blank" rel="noopener">Guide</a><a href="rating_guide.html" target="_blank" rel="noopener">Rating guide</a><span id="who" class="who"></span>
+      <button type="button" id="signout" class="linkbtn" title="Make this browser forget the admin link">Sign out</button></nav>
+  </header>
+  <main class="view">
+    <div class="card">
+      <div class="row"><h1>Progress</h1><div class="spacer"></div>
+        <button class="btn" id="refresh">Refresh</button></div>
+      <p class="muted" id="summary"></p>
+      <p class="muted" id="contact"></p>
+      <table class="list"><thead><tr><th>#</th><th>Name</th><th>Role</th><th>Reviews (of 250)</th><th>New questions</th>
+        <th>References (blind)</th><th>Rating sets</th><th>Not blind for</th><th>Last saved</th><th>Active</th></tr></thead><tbody id="rows"></tbody></table>
+      <p class="legend">"Not blind for" counts the base questions a doctor has opened in the rating mode, which shows answers
+        and the AI reference; they cannot write a blind reference for those (Phase 1A). The review and new-question pages show questions only.
+        "References" counts complete of assigned Phase 1A references (the doctors' pages call them answer keys), with those started and those declined as outside
+        the doctor's expertise. A <span class="chip test">test</span> account is for trying the site: the totals above and the
+        exports leave it out.</p>
+    </div>
+    <div class="card">
+      <h2>Export</h2>
+      <p><label class="inline-check"><input type="checkbox" id="include-test"> Include test accounts</label>
+        <span class="legend">Left out unless ticked. Every row says whether it comes from a test account (column <span class="kbd">test_account</span>).</span></p>
+      <table class="list exports"><tbody>
+        <tr><td>Question reviews: one row per doctor and question</td><td><button class="btn" data-export="reviews" data-format="csv">CSV</button> <button class="btn" data-export="reviews" data-format="json">JSON</button></td></tr>
+        <tr><td>New questions</td><td><button class="btn" data-export="new_questions" data-format="csv">CSV</button> <button class="btn" data-export="new_questions" data-format="json">JSON</button></td></tr>
+        <tr><td>Questions opened: every open, with the mode</td><td><button class="btn" data-export="views" data-format="csv">CSV</button></td></tr>
+        <tr><td>References (Phase 1A answer keys): one row per doctor and assigned question. JSON has each whole reference, for <span class="kbd">scripts/import_phase1a.py</span>.
+          Whether a reference was written blind is here: <span class="kbd">blind_at_completion</span>, <span class="kbd">blind_at_last_save</span>; and
+          <span class="kbd">review_open_before_stage1</span> says whether the doctor had seen the demographic versions on the review page before saving Stage 1</td><td><button class="btn" data-export="references" data-format="csv">CSV</button> <button class="btn" data-export="references" data-format="json">JSON</button></td></tr>
+        <tr><td>Blind status: per doctor and question, opened in review, reference or rating mode. <span class="kbd">blind_for_phase1a</span> says whether the doctor
+          can still write a blind reference (no after any rating open); for a reference already finished, see <span class="kbd">reference_complete_before_rating</span> here and the References export</td><td><button class="btn" data-export="exposure" data-format="csv">CSV</button></td></tr>
+        <tr><td>Answer ratings (v1 rating mode): one row per annotator, set and answer</td><td><button class="btn" data-export="ratings" data-format="csv">CSV</button> <button class="btn" data-export="ratings" data-format="json">JSON</button></td></tr>
+      </tbody></table>
+      <p class="legend">In the CSV files, text that begins with =, +, - or @ gets a leading apostrophe, so that a spreadsheet
+        shows it as text and does not run it as a formula. The JSON files carry the text exactly as typed.</p>
+    </div>
+    <div class="card">
+      <h2>Add a clinician</h2>
+      <div class="row"><input id="name" placeholder="Name" class="btn" style="cursor:text">
+        <input id="email" placeholder="Email (optional)" class="btn" style="cursor:text">
+        <label class="inline-check"><input type="checkbox" id="test"> Test account</label>
+        <button class="btn primary" id="add">Create personal link</button></div>
+      <p id="link" class="notes" hidden></p>
+      <p class="muted">Every doctor can review all 250 questions and write new ones; nothing needs assigning. Phase 1A references are assigned with <span class="kbd">node scripts/admin.mjs assign-refs --annotators 2,3 --base-ids ids.txt</span>, and rating sets (v1) with <span class="kbd">node scripts/admin.mjs assign --annotators 2,3</span> (see README).
+        A <b>test account</b> is for trying the site, for example by a supervisor: it gets three demo references, so its login shows all three tasks, and what it enters is left out of the exports unless you ask for it.</p>
+    </div>
+  </main>
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

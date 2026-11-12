@@ -1,0 +1,18 @@
+{
+  "name": "equitymedqa-sg-annotation",
+  "private": true,
+  "version": "2.0.0",
+  "description": "EquityMedQA-SG site for doctors: question review, new questions (blind), and the v1 answer-rating mode",
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "dev": "node dev/server.mjs",
+    "admin": "node scripts/admin.mjs",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "pg": "8.13.1"
+  }
+}
