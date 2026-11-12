@@ -53,8 +53,9 @@ export function fail(e) {
   if (e.status === 401) {
     document.getElementById("signout").hidden = true;
     view.innerHTML = `<div class="card"><h1>Access link needed</h1><p>Open this site with your personal link
-      (it ends in <span class="kbd">#k=…</span>). If you have lost it, ask the study team for a new one.</p>
-      <p class="muted" data-contact="Study team:" hidden></p></div>`;
+      (it ends in <span class="kbd">#k=…</span>). 
+      If you have lost it, ask the admin for a new one.</p>
+      <p class="muted" data-contact="Admin:" hidden></p></div>`;
     fillContact(view);
   } else if (e.status === 409) {
     view.innerHTML = `<div class="card"><h1>Not available</h1><p>${esc(e.message)}</p><p><a class="btn" href="#/">Home</a></p></div>`;
